@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+	<meta charset="UTF-8">
+	<title>Graph JS</title>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <style>
+
+        #type, #country{
+            border-radius: 4px;
+            background: gray;
+            color: white;
+            width: 100px;
+        }
+
+        #type optgroup{
+            border: 1px green;
+        }
+
+    </style>
+</head>
+<body>
+
+<select name="types" id="type" style="margin: 8px auto; display: block">
+    <option value="bar">bar</option>
+    <option value="line">line</option>
+    <option value="pie">pie</option>
+    <option value="doughnut">doughnut</option>
+    <option value="radar">radar</option>
+</select>
+
+
+<select name="country" id="country" style="margin: 8px auto; display: block">
+    <option value="Turkey">Turkey</option>
+    <option value="Germany">Germany</option>
+    <option value="United_States">United_States</option>
+    <option value="Italy">Italy</option>
+    <option value="France">France</option>
+</select>
+
+
+<canvas id="myChart" width="auto" height="100vw" style="margin-top: 40px"></canvas>
+
+
+<script>
+
+document.getElementById("type").addEventListener("change", (e)=>{updateChartType(e.target.value)})
+document.getElementById("country").addEventListener("change", (e)=>{updateChartData(e.target.value)})
+window.addEventListener("DOMContentLoaded", (e)=>{updateChartData("Turkey")})
+var ctx = document.getElementById('myChart').getContext('2d');
+
+
+let x = '{{ sözlük|safe }}' // Json Olabilmesi İçin Tekli Tırnak Önemli
+
+let y = x.split("NaN").join(0)
+let veri = JSON.parse(y)
+
+function updateChartType(type) {
+   myChart.destroy();
+   myChart = new Chart(ctx, {
+     type: type,
+     data: data,
+   });
+}
+
+let data;
+let country = veri.Turkey
+function updateChartData(country_){
+    if(country_ === "Italy"){
+        country = veri.Italy
+    }
+    else if(country_ === "Germany"){
+        country = veri.Germany
+    }
+    else if(country_ === "United_States"){
+        country = veri.United_States
+    }
+    else if(country_ === "Turkey"){
+        country = veri.Turkey
+    }
+    else if(country_ === "France"){
+        country = veri.France
+    }
+
+
+
+    data = {
+        labels : country.days,
+
+        datasets: [
+            {
+                label: 'Toplam Vaka Sayısı',
+                data: country.confirmed,
+                backgroundColor:
+                    'rgba(247,0,255,0.5)',
+                borderWidth: 0.8
+        },
+            {
+                label: "Toplam Ölüm Sayısı",
+                data: country.deaths,
+                backgroundColor:
+                    'rgba(239,0,0,0.5)',
+
+            },
+            {
+                label: "Günlük Vaka Sayısı",
+                data: country.newCases,
+                backgroundColor:
+                    "rgba(120,255,0,0.5)"
+
+            },
+            {
+                label: "Günlük Ölüm Sayısı",
+                data: country.newDeaths,
+                backgroundColor:
+                    "rgba(0,42,255,0.5)"
+            },
+
+            {
+                label: "Toplam Test Sayısı",
+                data: country.totalTests,
+                backgroundColor:
+                    "rgba(255,72,0,0.5)"
+            }
+        ]
+    }
+
+    myChart.destroy()
+    myChart = new Chart(ctx, {
+     type: "bar",
+     data: data,
+   });
+
+
+}
+
+myChart = new Chart(ctx, {
+    type: "bar",
+    data: data,
+   });
+
+
+
+
+
+
+
+
+</script>
+
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+</body>
+</html>
