@@ -4,27 +4,14 @@ import numpy as np
 
 plt.interactive(True)
 
+plate_cascade = cv2.CascadeClassifier("data/haarcascades/haarcascade_russian_plate_number.xml")
 
-def display(imgg):
-    plt.imshow(imgg, cmap="gray")
+img = cv2.imread("C:/Users/LENOVO/Desktop/qqq.jfif")
 
+rects = plate_cascade.detectMultiScale(img, scaleFactor=1, minNeighbors=4)
 
-reeses = cv2.imread("data/reeses_puffs.png")
-cereals = cv2.imread("data/many_cereals.jpg")
+for x, y, w, h in rects:
+    cv2.rectangle(img, (x, y), (x + w, y + h), (255, 0, 0), thickness=10)
+    print(x)
 
-sift = cv2.SIFT_create()
-
-kp1, des1 = sift.detectAndCompute(reeses, None)
-kp2, des2 = sift.detectAndCompute(cereals, None)
-
-index_params = dict(alghoritm=0, trees=5)
-search_params = dict(checks=50)
-
-flann = cv2.FlannBasedMatcher(index_params, search_params)
-matches = flann.knnMatch(des1, des2, k=2)
-matchesMask = [[0, 0] for i in range(len(matches))]
-
-good = []
-
-for i, (match1, match2) in enumerate(matches):
-    if)
+plt.imshow(img)

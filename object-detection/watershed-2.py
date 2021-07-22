@@ -38,7 +38,6 @@ markers += 1
 
 markers[unknown == 255] = 0
 
-# TODO : img nin neden olmadığına bak
 markers = cv2.watershed(sep_coins, markers)
 
 contours, hierarchy = cv2.findContours(markers, cv2.RETR_CCOMP, cv2.CHAIN_APPROX_SIMPLE)
