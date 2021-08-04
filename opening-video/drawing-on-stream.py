@@ -41,7 +41,6 @@ while True:
 
     # drawing rectangle
     if topLeftClicked and bottomRightClicked:
-        print(122222)
         cv2.rectangle(frame, pt1, pt2, (0, 0, 255), 2)
 
     cv2.imshow("Test", frame)

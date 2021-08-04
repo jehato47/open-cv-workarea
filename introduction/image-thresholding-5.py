@@ -17,6 +17,6 @@ csword = cv2.imread("../data/crossword.jpg", 0)
 
 ret, thresh = cv2.threshold(csword, 127, 255, cv2.THRESH_TOZERO)
 
-cv2.adaptiveThreshold(csword, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY, 10, 8)
+q = cv2.adaptiveThreshold(csword, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY, blockSize=5, C=8)
 
-show_img(thresh)
+show_img(q)

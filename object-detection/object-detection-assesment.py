@@ -2,6 +2,7 @@ import cv2
 import matplotlib.pyplot as plt
 import numpy as np
 
+
 plt.interactive(True)
 img = cv2.imread("../data/car_plate.jpg")
 
