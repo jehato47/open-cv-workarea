@@ -12,15 +12,17 @@ def ask_for_tracker():
     choice = input("Please select your tracker: ")
 
     if choice == '0':
-
-        tracker = cv2.TrackerBoosting_create()
+        tracker = cv2.legacy.TrackerBoosting_create()
     if choice == '1':
-        tracker = cv2.TrackerMIL_create()
+        tracker = cv2.legacy.TrackerMIL_create()
     if choice == '2':
-        tracker = cv2.TrackerKCF_create()
+        tracker = cv2.legacy.TrackerKCF_create()
     if choice == '3':
-        tracker = cv2.TrackerTLD_create()
+        tracker = cv2.legacy.TrackerTLD_create()
     if choice == '4':
-        tracker = cv2.TrackerMedianFlow_create()
+        tracker = cv2.legacy.TrackerMedianFlow_create()
 
     return tracker
+
+
+ask_for_tracker()
