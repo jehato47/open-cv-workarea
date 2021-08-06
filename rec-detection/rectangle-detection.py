@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 plt.interactive(True)
-img = cv2.imread("imgg.jpeg")
+img = cv2.imread("0qflAFt.png")
 
 # img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
 
