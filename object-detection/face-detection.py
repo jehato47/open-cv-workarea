@@ -24,7 +24,7 @@ def detect_face(img):
     time.sleep(0.01)
     face_img = img.copy()
 
-    face_rects = face_cascade.detectMultiScale(face_img)
+    face_rects = face_cascade.detectMultiScale(face_img, minNeighbors=6)
 
     for (x, y, w, h) in face_rects:
         cv2.rectangle(face_img, (x, y), (x + w, y + h), color=(255, 255, 255), thickness=4)
@@ -69,4 +69,7 @@ def detect_eye(img):
     # return eye_img
 
 
-detect_eye(nadia)
+# detect_eye(nadia)
+
+imgg = detect_face(solvay)
+display(imgg)
