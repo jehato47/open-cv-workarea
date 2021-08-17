@@ -72,3 +72,4 @@ dog_img = dog_img / 255
 
 print(new_model.predict_classes(dog_img))
 print(new_model.predict(dog_img))
+print(12123)
