@@ -1,38 +1,38 @@
-import cv2
-import matplotlib.pyplot as plt
-import numpy as np
+from keras.models import Sequential
+from keras.layers import Conv2D, Dense, MaxPool2D, Flatten
+from keras.datasets import cifar10
+from keras.utils.np_utils import to_categorical
 
-cap = cv2.VideoCapture(0, cv2.CAP_DSHOW)
+(x_train, y_train), (x_test, y_test) = cifar10.load_data()
 
-ret, first_frame = cap.read()
-first_frame = cv2.flip(first_frame, 1)
-first_gray = cv2.cvtColor(first_frame, cv2.COLOR_BGR2GRAY)
+x_train = x_train / 255
+x_test = x_test / 255
 
-hsv_mask = np.zeros_like(first_frame, dtype=np.uint8)
-hsv_mask[:, :, 1] = 255
+y_cat_train = to_categorical(y_train, 10)
+y_cat_test = to_categorical(y_test, 10)
 
-while True:
-    ret1, frame = cap.read()
-    frame = cv2.flip(frame, 1)
-    frame_gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+model = Sequential()
 
-    flow = cv2.calcOpticalFlowFarneback(first_gray, frame_gray, None, 0.5, 3, 15, 3, 5, 1.2, 0)
+model.add(Conv2D(filters=32, kernel_size=(4, 4), activation="relu", input_shape=(32, 32, 3)))
 
-    # TODO : Buraya bak
-    mag, ang = cv2.cartToPolar(flow[:, :, 0], flow[:, :, 1], angleInDegrees=True)
+model.add(MaxPool2D(pool_size=(2, 2)))
 
-    hsv_mask[:, :, 0] = ang / 2
-    hsv_mask[:, :, 2] = cv2.normalize(mag, None, 0, 255, cv2.NORM_MINMAX)
+model.add(Conv2D(filters=32, kernel_size=(4, 4), activation="relu", input_shape=(32, 32, 3)))
 
-    bgr = cv2.cvtColor(hsv_mask, cv2.COLOR_HSV2BGR)
+model.add(MaxPool2D(pool_size=(2, 2)))
 
-    cv2.imshow("o-flow", bgr)
+model.add(Flatten())
 
-    key = cv2.waitKey(10)
-    if key == ord("q"):
-        break
+model.add(Dense(256, "relu"))
 
-    first_gray = frame_gray
+model.add(Dense(10, "softmax"))
 
-cap.release()
-cv2.destroyAllWindows()
+model.compile(loss="categorical_crossentropy", optimizer="rmsprop", metrics=["accuracy"])
+
+model.fit(x_train, y_cat_train, verbose=1, epochs=2)
+
+model.evaluate(x_test, y_cat_test)
+
+predictions = model.predict_classes(x_test)
+
+
